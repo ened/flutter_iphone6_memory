@@ -89,34 +89,40 @@ class _MyHomePageState extends State<MyHomePage>
         }),
         // CHECK: Adding the following line will create further memory pressure.
         //        The bottom will obstruct the main area.
-        bottomNavigationBar: const MyBottomBar(),
+        // bottomNavigationBar: const MyBottomBar(),
+
+        // The following tests if setting a color, thus making the bottom area opague, could help,
+        // bottomNavigationBar: Container(
+        //   color: Colors.red,
+        //   child: const MyBottomBar(),
+        // ),
       ),
     );
   }
 
   AppBar buildAppBar() {
     return AppBar(
-        title: Text('${widget.title} $_counter'),
-        bottom: TabBar(
-          controller: _controller,
-          tabs: <Widget>[
-            Tab(icon: Icon(Icons.directions_bike)),
-            Tab(icon: Icon(Icons.directions_car)),
-            Tab(icon: Icon(Icons.directions_bus)),
-          ],
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.motorcycle),
-            onPressed: () {
-              _appChannel.invokeMethod('engine.start', {
-                'dispatcher.key':
-                    PluginUtilities.getCallbackHandle(_engineEntryPoint)
-                        .toRawHandle()
-              });
-            },
-          ),
+      title: Text('${widget.title} $_counter'),
+      bottom: TabBar(
+        controller: _controller,
+        tabs: <Widget>[
+          Tab(icon: Icon(Icons.directions_bike)),
+          Tab(icon: Icon(Icons.directions_car)),
+          Tab(icon: Icon(Icons.directions_bus)),
         ],
-      );
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.motorcycle),
+          onPressed: () {
+            _appChannel.invokeMethod('engine.start', {
+              'dispatcher.key':
+                  PluginUtilities.getCallbackHandle(_engineEntryPoint)
+                      .toRawHandle()
+            });
+          },
+        ),
+      ],
+    );
   }
 }
