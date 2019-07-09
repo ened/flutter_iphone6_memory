@@ -74,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage>
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: Colors.black54,
         appBar: AppBar(
           title: Text('${widget.title} $_counter'),
           bottom: TabBar(

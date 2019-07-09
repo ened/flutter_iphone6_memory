@@ -20,7 +20,7 @@ func registerPlugins(registry: FlutterPluginRegistry) {
     let flutterView = window?.rootViewController as! FlutterViewController
 
     engine = FlutterEngine(name: "AnIsolate", project: nil, allowHeadlessExecution: true)
-    channel = FlutterMethodChannel(name: "com.app/app", binaryMessenger: flutterView)
+    channel = FlutterMethodChannel(name: "com.app/app", binaryMessenger: flutterView.engine.binaryMessenger)
     channel?.setMethodCallHandler({ (call, result) in
         switch call.method {
         case "engine.start":
