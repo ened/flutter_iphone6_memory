@@ -1,9 +1,14 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:iphone6_memory/page1.dart';
 import 'package:iphone6_memory/page2.dart';
 import 'package:iphone6_memory/page3.dart';
 
 void main() => runApp(MyApp());
+
+MethodChannel _appChannel = MethodChannel('com.app/app');
 
 class MyApp extends StatelessWidget {
   @override
@@ -27,6 +32,10 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
+}
+
+void _engineEntryPoint() {
+  print('engine has been started!');
 }
 
 class _MyHomePageState extends State<MyHomePage>
@@ -75,6 +84,18 @@ class _MyHomePageState extends State<MyHomePage>
               Tab(icon: Icon(Icons.directions_bus)),
             ],
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.motorcycle),
+              onPressed: () {
+                _appChannel.invokeMethod('engine.start', {
+                  'dispatcher.key':
+                      PluginUtilities.getCallbackHandle(_engineEntryPoint)
+                          .toRawHandle()
+                });
+              },
+            ),
+          ],
         ),
         body: Builder(builder: (context) {
           switch (_counter % 3) {
