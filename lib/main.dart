@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iphone6_memory/my_bottom_bar.dart';
 import 'package:iphone6_memory/page1.dart';
 import 'package:iphone6_memory/page2.dart';
 import 'package:iphone6_memory/page3.dart';
@@ -75,29 +76,7 @@ class _MyHomePageState extends State<MyHomePage>
       length: 3,
       child: Scaffold(
         backgroundColor: Colors.black54,
-        appBar: AppBar(
-          title: Text('${widget.title} $_counter'),
-          bottom: TabBar(
-            controller: _controller,
-            tabs: <Widget>[
-              Tab(icon: Icon(Icons.directions_bike)),
-              Tab(icon: Icon(Icons.directions_car)),
-              Tab(icon: Icon(Icons.directions_bus)),
-            ],
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.motorcycle),
-              onPressed: () {
-                _appChannel.invokeMethod('engine.start', {
-                  'dispatcher.key':
-                      PluginUtilities.getCallbackHandle(_engineEntryPoint)
-                          .toRawHandle()
-                });
-              },
-            ),
-          ],
-        ),
+        appBar: buildAppBar(),
         body: Builder(builder: (context) {
           switch (_counter % 3) {
             case 0:
@@ -108,7 +87,36 @@ class _MyHomePageState extends State<MyHomePage>
               return Page3();
           }
         }),
+        // CHECK: Adding the following line will create further memory pressure.
+        //        The bottom will obstruct the main area.
+        bottomNavigationBar: const MyBottomBar(),
       ),
     );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+        title: Text('${widget.title} $_counter'),
+        bottom: TabBar(
+          controller: _controller,
+          tabs: <Widget>[
+            Tab(icon: Icon(Icons.directions_bike)),
+            Tab(icon: Icon(Icons.directions_car)),
+            Tab(icon: Icon(Icons.directions_bus)),
+          ],
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.motorcycle),
+            onPressed: () {
+              _appChannel.invokeMethod('engine.start', {
+                'dispatcher.key':
+                    PluginUtilities.getCallbackHandle(_engineEntryPoint)
+                        .toRawHandle()
+              });
+            },
+          ),
+        ],
+      );
   }
 }
